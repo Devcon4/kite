@@ -1,0 +1,1 @@
+public record Link(PathString path, string name);

@@ -1,14 +1,15 @@
-
+using Kite.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Kite.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
-public class LinkController : ControllerBase
-{
+public class LinkController : ControllerBase {
   private readonly IMediator _mediator;
 
-  LinkController(IMediator mediator) {
+  public LinkController(IMediator mediator) {
     _mediator = mediator;
   }
 

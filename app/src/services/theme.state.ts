@@ -1,17 +1,25 @@
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, fromEvent } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-
-import { Injectable } from '@angular/core';
 
 export type ThemeType = 'dark' | 'light';
 const on = 'var(--on)';
 const off = 'var(--off)';
 
+export const colorLookup = [
+  '--clr1',
+  '--clr2',
+  '--clr3',
+  '--clr4',
+  '--clr5',
+  '--clr6',
+];
+
 // Example of how to create StateServices.
 // Store Application state as BehaviorSubjects, create functions to update state.
 // In components use map to format Application State into Presentation State.
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class ThemeState {
   theme = new BehaviorSubject<ThemeType>(
@@ -39,5 +47,20 @@ export class ThemeState {
     document.body.style.setProperty('--light', isLight ? off : on);
     document.body.style.setProperty('--dark', isLight ? on : off);
     this.setTheme(isLight ? 'dark' : 'light');
+  }
+
+  hashColor(tag: string) {
+    return `var(${colorLookup[(tag.charCodeAt(0) % colorLookup.length) - 1]})`;
+  }
+
+  ingressKindColor(kind?: string) {
+    const kindLookup = {
+      Static: 0,
+      Ingress: 2,
+      IngressRoute: 1,
+    };
+    return `var(${
+      colorLookup[kindLookup[kind as keyof typeof kindLookup] || 0]
+    })`;
   }
 }

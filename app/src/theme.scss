@@ -56,7 +56,7 @@
     $font-family: 'Roboto, Arial, san-serif',
     $headline: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 24px, $line-height: 32px, $font-weight: bold),
     $title: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 20px, $line-height: 32px, $font-weight: bold),
-    $subheading-2: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 16px, $line-height: 28px, $font-weight: bold),
+    $subheading-2: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 32px, $line-height: 28px, $font-weight: 200),
     $subheading-1: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 15px, $line-height: 24px, $font-weight: bold),
     $body-1: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 1rem)
   );
@@ -70,37 +70,59 @@
         background-color: var(--#{$name}-background);
         // Setup colors.
         // ðŸŽ¨ Change these to whatever colors you want.
+        // // Dark colors.
+        // --#{$name}0: #202426;
+        // --#{$name}1: #2F353D;
+        // --#{$name}2: rgb(41 44 50);;
+        // --#{$name}3: #2B3850;
 
+        // // Light colors.
+        // --#{$name}4: #F5F5F5;
+        // --#{$name}5: #FDFDFD;
+        // --#{$name}6: #EBEBEB;
+
+        // // Primary colors.
+        // --#{$name}7: rgb(140, 17, 248);
+        // --#{$name}8: rgb(225, 10, 98);
+        // --#{$name}9: rgb(17, 235, 248);
+        // --#{$name}10: rgb(255, 255, 255);
+
+        // // Action colors.
+        // --#{$name}11: rgb(234, 235, 27);
+        // --#{$name}12: rgb(234, 235, 27);
+        // --#{$name}13: rgb(68, 168, 205);
+        // --#{$name}14: rgb(125, 210, 249);
+        // --#{$name}15: rgb(169, 49, 43);
         // Dark colors.
-        --#{$name}0: #202426;
-        --#{$name}1: #2F353D;
-        --#{$name}2: #2B3850;
-        --#{$name}3: #2B3850;
+        --#{$name}0: #1f2328;
+        --#{$name}1: #2e3640;
+        --#{$name}2: #23272e;
+        --#{$name}3: #191c20;
 
         // Light colors.
-        --#{$name}4: #F5F5F5;
-        --#{$name}5: #FDFDFD;
-        --#{$name}6: #EBEBEB;
+        --#{$name}4: #eeeff2;
+        --#{$name}5: #f5f7fa;
+        --#{$name}6: #eef0f3;
 
         // Primary colors.
-        --#{$name}7: #1D3557;
-        --#{$name}8: #1A304F;
-        --#{$name}9: #457B9D;
-        --#{$name}10: #3E7395;
+        --#{$name}7: #df702b;
+        --#{$name}8: #33648a;
+        --#{$name}9: #d5614d;
+        --#{$name}10: #61a6cb;
 
         // Action colors.
-        --#{$name}11: #E6C567;
-        --#{$name}12: #C7D7E2;
-        --#{$name}13: #A1CD44;
-        --#{$name}14: #E63946;
-        --#{$name}15: #F5857F;
+        --#{$name}11: #de983c;
+        --#{$name}12: #f5f518;
+        --#{$name}13: #03a2d3;
+        --#{$name}14: #74d8e6;
+        --#{$name}15: #1d2f35;
 
-        --#{$name}-primary:           var(--light, var(--#{$name}7))  var(--dark, var(--#{$name}7));
-        --#{$name}-primary-variant:   var(--light, var(--#{$name}8))  var(--dark, var(--#{$name}8));
-        --#{$name}-secondary:         var(--light, var(--#{$name}9))  var(--dark, var(--#{$name}9));
-        --#{$name}-secondary-variant: var(--light, var(--#{$name}10)) var(--dark, var(--#{$name}10));
-        --#{$name}-background:        var(--light, var(--#{$name}4))  var(--dark, var(--#{$name}0));
+        --#{$name}-primary:           var(--light, var(--#{$name}13))  var(--dark, var(--#{$name}9));
+        --#{$name}-primary-variant:   var(--light, var(--#{$name}14))  var(--dark, var(--#{$name}7));
+        --#{$name}-secondary:         var(--light, var(--#{$name}12))  var(--dark, var(--#{$name}10));
+        --#{$name}-background:        var(--light, var(--#{$name}6))  var(--dark, var(--#{$name}0));
         --#{$name}-surface:           var(--light, var(--#{$name}5))  var(--dark, var(--#{$name}1));
+        --#{$name}-surface-secondary: var(--light, var(--#{$name}4))  var(--dark, var(--#{$name}2));
         --#{$name}-warning:           var(--light, var(--#{$name}11)) var(--dark, var(--#{$name}11));
         --#{$name}-error:             var(--light, var(--#{$name}14)) var(--dark, var(--#{$name}14));
         --#{$name}-disabled:          var(--light, var(--#{$name}0)) var(--dark, var(--#{$name}0));

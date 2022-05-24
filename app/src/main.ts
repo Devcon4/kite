@@ -1,11 +1,24 @@
+import { HttpClientModule } from '@angular/common/http';
 import { enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'launchpad',
+    loadComponent: () =>
+      import('./app/components/launchpad/launchpad.component').then(
+        (c) => c.LaunchpadComponent
+      ),
+  },
+  {
+    pathMatch: 'full',
+    redirectTo: 'launchpad',
+    path: '',
+  },
+];
 
 if (environment.production) {
   enableProdMode();
@@ -14,5 +27,6 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(RouterModule.forRoot(routes)),
-  ]
-}).catch(err => console.error(err));
+    importProvidersFrom(HttpClientModule),
+  ],
+}).catch((err) => console.error(err));

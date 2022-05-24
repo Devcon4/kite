@@ -1,0 +1,95 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-image: paint(fleck);
+  resize: both;
+  overflow: hidden;
+
+  --clr1: var(--light, var(--kite13)) var(--dark, var(--kite7));
+  --clr2: var(--light, var(--kite14)) var(--dark, var(--kite9));
+  --clr3: var(--light, var(--kite12)) var(--dark, var(--kite8));
+  --clr4: var(--light, #bebebe) var(--dark, var(--kite10));
+  --clr5: var(--light, var(--kite12)) var(--dark, var(--kite11));
+  --clr6: var(--light, var(--kite15)) var(--dark, #516f85);
+  --fleck-colors: var(--clr1) var(--clr2) var(--clr3) var(--clr4) var(--clr5) var(--clr6);
+  --fleck-seed: 124;
+  --fleck-cell-size: 150;
+  --fleck-size-base: 5;
+  --fleck-density: 15;
+  // --fleck-seed: 124;
+  // --fleck-cell-size: 75;
+  // --fleck-size-base: 6;
+  // --fleck-density: 15;
+
+  min-height: 100%;
+}
+
+.card-color {
+  background-color: var(--kite-surface-secondary);
+}
+
+.card.banner {
+  flex-direction: row;
+  justify-content: center;
+}
+
+.banner button {
+  align-self: center;
+  justify-self: flex-end;
+}
+
+.card h1 {
+  flex: 1;
+  font-size: 42px;
+  text-align: center;
+}
+
+.card {
+  max-width: 1080px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+  border-radius: 5px;
+  
+  padding: 12px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.2));
+}
+
+.header {
+  font-size: 38px;
+  font-weight: 200;
+  padding: 24px 0;
+  position: sticky;
+  top: 0px;
+}
+
+.spinner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+kite-link-card {
+  flex-basis: 40%;
+}
+
+@media screen and (max-width: 1080px) {
+  kite-link-card {
+    flex-basis: 100%;
+  }
+
+  .card h1 {
+    text-align: start;
+  }
+}

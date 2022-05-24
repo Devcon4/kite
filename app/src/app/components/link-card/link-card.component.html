@@ -1,0 +1,20 @@
+<div class="header">
+  <h3>
+    <a class="path" href="{{ link?.path }}">{{ link?.name | titlecase }}</a>
+  </h3>
+  <div class="kind">{{ link?.kind }}</div>
+</div>
+<div class="namespace" *ngIf="link?.namespaceProperty">
+  Namespace: {{ link?.namespaceProperty }}
+</div>
+<mat-chip-list
+  class="tags"
+  aria-label="Tags"
+  *ngIf="link?.tags && (link?.tags || []).length > 0"
+>
+  <mat-chip
+    [style.border-color]="selectTagColor(tag)"
+    *ngFor="let tag of link?.tags"
+    >{{ tag | titlecase }}</mat-chip
+  >
+</mat-chip-list>

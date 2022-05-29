@@ -22,10 +22,7 @@ export class SettingState {
   public getSettings() {
     this.httpClient
       .get<SettingResponse>('/api/setting')
-      .pipe(
-        tap((r) => this.globalSettings.next(r.settings)),
-        tap((r) => console.log(r))
-      )
+      .pipe(tap((r) => this.globalSettings.next(r.settings)))
       .subscribe();
   }
 }

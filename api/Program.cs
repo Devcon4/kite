@@ -19,6 +19,7 @@ builder.Configuration
 builder.Services.Configure<IngressOptions>(builder.Configuration.GetSection("Kite:Ingress"));
 builder.Services.Configure<IngressRouteOptions>(builder.Configuration.GetSection("Kite:IngressRoute"));
 builder.Services.Configure<StaticRouteOptions>(builder.Configuration.GetSection("Kite:StaticRoute"));
+builder.Services.Configure<SettingOptions>(builder.Configuration.GetSection("Kite:Settings"));
 
 builder.Services.AddScoped<IKubernetesFactory, KubernetesFactory>();
 

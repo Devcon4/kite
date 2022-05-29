@@ -1,5 +1,6 @@
 using Kite.Domain;
 using Kite.External;
+using Kite.Mappers;
 using MediatR;
 using Microsoft.Extensions.Options;
 
@@ -47,9 +48,9 @@ public class GetLinksHandler : IRequestHandler<GetLinksRequest, GetLinksResponse
 
   public async Task<GetLinksResponse> Handle(GetLinksRequest request, CancellationToken cancellationToken) {
 
-    var ingresses = (await _kubernetesClient.GetIngresses()).Select(Mappers.IngressToLink).Select(i => i with { path = PathSchema(i.path) });
-    var ingressRoutes = (await _kubernetesClient.GetIngressRoutes()).Select(Mappers.IngressToLink).Select(i => i with { path = IngressRoutePath(i.path) });
-    var staticRoutes = _staticRouteOptions.Enabled ? _staticRouteOptions.Routes.Select(Mappers.StaticRouteToLink).Select(i => i with { path = PathSchema(i.path) }) : new List<Link>();
+    var ingresses = (await _kubernetesClient.GetIngresses()).Select(Mapper.IngressToLink).Select(i => i with { path = PathSchema(i.path) });
+    var ingressRoutes = (await _kubernetesClient.GetIngressRoutes()).Select(Mapper.IngressToLink).Select(i => i with { path = IngressRoutePath(i.path) });
+    var staticRoutes = _staticRouteOptions.Enabled ? _staticRouteOptions.Routes.Select(Mapper.StaticRouteToLink).Select(i => i with { path = PathSchema(i.path) }) : new List<Link>();
     var routes = ingresses.Concat(ingressRoutes).Concat(staticRoutes);
     return new GetLinksResponse(routes.ToList(), routes.Count());
   }

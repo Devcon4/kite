@@ -1,7 +1,8 @@
 using Kite.Domain;
 using Kite.External;
 
-public static partial class Mappers {
+namespace Kite.Mappers;
+public static partial class Mapper {
 
   private static string GetAnnotation(string annotationKey, IEnumerable<KeyValuePair<string, string>> annotations, string defaultValue = "") =>
     annotations

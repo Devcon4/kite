@@ -50,6 +50,7 @@ jobs:
         with:
           context: .
           file: ./dockerfile
+          pull: true
           push: true
           cache-from: type=local,src=/tmp/.main-cache
           cache-to: type=local,dest=/tmp/.main-cache-new

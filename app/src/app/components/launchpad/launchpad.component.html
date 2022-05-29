@@ -1,14 +1,14 @@
 <div class="banner card card-color">
-  <h1 class="header">Kite Dashboard</h1>
+  <h1 class="header">{{ appName | async }}</h1>
   <button mat-icon-button color="secondary" (click)="toggleTheme()">
     <mat-icon *ngIf="isDark | async">light_mode</mat-icon>
     <mat-icon *ngIf="isLight | async">dark_mode</mat-icon>
   </button>
 </div>
-<ng-container *ngIf="links | async as linkGroups">
+<ng-container *ngIf="groupsObs | async as groups">
   <div
     class="card card-color"
-    *ngFor="let group of linkGroups | keyvalue: keySort"
+    *ngFor="let group of groups.list | keyvalue: groups.sort"
   >
     <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
     <div class="links">

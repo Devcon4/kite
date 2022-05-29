@@ -54,6 +54,7 @@ jobs:
           push: true
           cache-from: type=local,src=/tmp/.main-cache
           cache-to: type=local,dest=/tmp/.main-cache-new
+          build-args: VERSION=${{ needs.get_semver.outputs.semVer }}
           tags: |
             ghcr.io/devcon4/kite:${{ needs.get_semver.outputs.semVer }}
             ghcr.io/devcon4/kite:latest

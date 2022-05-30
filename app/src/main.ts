@@ -18,6 +18,11 @@ const routes: Routes = [
     redirectTo: 'launchpad',
     path: '',
   },
+  {
+    pathMatch: 'full',
+    redirectTo: 'launchpad',
+    path: '**',
+  },
 ];
 
 if (environment.production) {

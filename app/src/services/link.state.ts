@@ -9,6 +9,7 @@ export type Link = {
   namespaceProperty: string;
   kind: string;
   tags: string[];
+  description: string;
 };
 
 type LinkResponse = {

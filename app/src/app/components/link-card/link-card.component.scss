@@ -22,6 +22,8 @@ mat-chip {
 .header {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 12px;
+
 }
 
 .kind {
@@ -31,8 +33,12 @@ mat-chip {
 }
 
 .namespace {
-  padding-top: 12px;
   margin-bottom: -12px;
+}
+
+.description {
+  padding: 4px;
+  border-left: 3px solid var(--dark, var(--kite8)) var(--light, var(--kite13));
 }
 
 a {

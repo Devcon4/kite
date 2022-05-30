@@ -4,6 +4,7 @@
   </h3>
   <div class="kind">{{ link?.kind }}</div>
 </div>
+<p class="description" *ngIf="link?.description">{{ link?.description }}</p>
 <div class="namespace" *ngIf="link?.namespaceProperty">
   Namespace: {{ link?.namespaceProperty }}
 </div>

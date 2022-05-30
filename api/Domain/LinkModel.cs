@@ -5,5 +5,6 @@ public record Link(
   string? name,
   string? namespaceProperty,
   string kind,
-  IEnumerable<string> ? tags, string? group
+  IEnumerable<string> ? tags, string? group,
+  string? description
 );

@@ -30,6 +30,7 @@ public class KubernetesClient {
   }
 
   public async Task<IEnumerable<Ingress>> GetIngresses() {
+    if (!_ingressOptions.Enabled) return new List<Ingress>();
 
     var ingresses = await _client.ListIngressForAllNamespacesAsync(labelSelector: _ingressOptions?.LabelSelector);
     return ingresses.Items

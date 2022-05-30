@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - "kite.ingress.yml"
+configMapGenerator:
+  - name: kite-configmap
+    files:
+      - "./appsettings.json"
+helmCharts:
+  - name: kite
+    namespace: kite
+    repo: https://devcon4.github.io/kite
+    releaseName: kite
+    valuesInline:
+      kiteConfig:
+        configMapName: kite-configmap

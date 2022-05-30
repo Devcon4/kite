@@ -1,0 +1,29 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kite-cyphers-dev-cert
+spec:
+  dnsNames:
+    - kite.cyphers.dev
+  secretName: kite-cyphers-dev-cert
+  issuerRef:
+    name: digitalocean-issuer
+    kind: ClusterIssuer
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kite-ingress
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: kite-cyphers-dev-cert
+  routes:
+    - match: Host(`kite.cyphers.dev`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: kite
+          namespace: kite
+          port: 4230

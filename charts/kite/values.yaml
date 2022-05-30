@@ -71,6 +71,4 @@ tolerations: []
 
 affinity: {}
 
-kiteConfig:
-  enabled: false
-  configMapName: kite-configmap
+kiteConfig: {}

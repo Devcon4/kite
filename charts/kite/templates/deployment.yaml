@@ -14,12 +14,12 @@ spec:
       labels:
         {{- include "helm.selectorLabels" . | nindent 8 }}
     spec:
-    {{- with .Values.kiteConfig.enabled }}
+    {{- with .Values.kiteConfig }}
       volumes:
         - name: kite-config
           configMap:
-            name: {{ .Values.kiteConfig.configMapName }}
-    {{- end -}}
+            name: {{ .configMapName }}
+    {{- end }}
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -33,11 +33,11 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.kiteConfig.enabled }}
+          {{- with .Values.kiteConfig }}
           volumeMounts:
             - mountPath: /app/secrets
               name: kite-config
-          {{- end -}}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8080

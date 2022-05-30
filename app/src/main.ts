@@ -16,12 +16,12 @@ const routes: Routes = [
   {
     pathMatch: 'full',
     redirectTo: 'launchpad',
-    path: '',
+    path: '**',
   },
   {
     pathMatch: 'full',
     redirectTo: 'launchpad',
-    path: '**',
+    path: '',
   },
 ];
 

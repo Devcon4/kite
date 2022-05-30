@@ -35,6 +35,8 @@ if (app.Environment.IsDevelopment()) {
   app.UseSwaggerUI();
 }
 
+app.MapFallbackToFile("index.html");
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

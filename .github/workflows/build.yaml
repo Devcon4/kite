@@ -5,6 +5,7 @@ on:
       - "main"
     paths-ignore:
       - "charts/**"
+      - "k8s/**"
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 jobs:

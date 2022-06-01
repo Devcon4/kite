@@ -3,6 +3,16 @@ entries:
   kite:
   - apiVersion: v2
     appVersion: 0.1.13
+    created: "2022-06-01T21:23:10.824674773Z"
+    description: A Helm chart for Kubernetes
+    digest: f0d810d6bb2072fd80ed697501110bf7e4261a0531a89301ca1801bf40cf5e3b
+    name: kite
+    type: application
+    urls:
+    - https://github.com/Devcon4/kite/releases/download/kite-0.1.20/kite-0.1.20.tgz
+    version: 0.1.20
+  - apiVersion: v2
+    appVersion: 0.1.13
     created: "2022-06-01T20:27:51.648979351Z"
     description: A Helm chart for Kubernetes
     digest: a4bc43e070e3655f7604ab5eb67f66d263a083194b8d4e03936760f5c47366a9
@@ -121,4 +131,4 @@ entries:
     urls:
     - https://github.com/Devcon4/kite/releases/download/kite-0.1.8/kite-0.1.8.tgz
     version: 0.1.8
-generated: "2022-06-01T20:27:51.649026353Z"
+generated: "2022-06-01T21:23:10.824768273Z"

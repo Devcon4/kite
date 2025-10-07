@@ -5,11 +5,10 @@ import { Link } from '../../../services/link.state';
 import { ThemeState } from '../../../services/theme.state';
 
 @Component({
-  selector: 'kite-link-card',
-  templateUrl: './link-card.component.html',
-  styleUrls: ['./link-card.component.scss'],
-  standalone: true,
-  imports: [CommonModule, MatChipsModule],
+    selector: 'kite-link-card',
+    templateUrl: './link-card.component.html',
+    styleUrls: ['./link-card.component.scss'],
+    imports: [CommonModule, MatChipsModule]
 })
 export class LinkCardComponent implements OnInit {
   @Input()

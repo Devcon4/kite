@@ -17,17 +17,16 @@ import { ThemeState, ThemeType } from '../../../services/theme.state';
 import { LinkCardComponent } from '../link-card/link-card.component';
 
 @Component({
-  selector: 'kite-launchpad',
-  templateUrl: './launchpad.component.html',
-  styleUrls: ['./launchpad.component.scss'],
-  standalone: true,
-  imports: [
-    LinkCardComponent,
-    CommonModule,
-    MatProgressSpinnerModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+    selector: 'kite-launchpad',
+    templateUrl: './launchpad.component.html',
+    styleUrls: ['./launchpad.component.scss'],
+    imports: [
+        LinkCardComponent,
+        CommonModule,
+        MatProgressSpinnerModule,
+        MatButtonModule,
+        MatIconModule,
+    ]
 })
 export class LaunchpadComponent implements OnInit {
   constructor(

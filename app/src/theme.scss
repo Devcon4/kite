@@ -2,10 +2,32 @@
 // Custom theme setup for Angular projects.
 // Based on a 0-15 color palette similar to Nord https://www.nordtheme.com/docs/colors-and-palettes
 // For more information: https://material.angular.io/guide/theming
-// @import '@angular/material/theming';
 @use '@angular/material' as mat;
+@use 'sass:map';
 
-@import '@angular/material/theming';
+// Include legacy theming variables
+$dark-dividers: rgba(black, 0.12);
+$light-dividers: rgba(white, 0.12);
+$dark-disabled-text: rgba(black, 0.38);
+$light-disabled-text: rgba(white, 0.5);
+$dark-secondary-text: rgba(black, 0.54);
+$light-secondary-text: rgba(white, 0.7);
+$dark-focused: rgba(black, 0.12);
+$light-focused: rgba(white, 0.12);
+
+// Define material grey palette
+$mat-grey: (
+  50: #fafafa,
+  100: #f5f5f5,
+  200: #eeeeee,
+  300: #e0e0e0,
+  400: #bdbdbd,
+  500: #9e9e9e,
+  600: #757575,
+  700: #616161,
+  800: #424242,
+  900: #212121,
+);
 
 // TO USE:
 // 1. Set the colors below to yours. It is suggested to follow a similar pattern as Nord.
@@ -52,7 +74,7 @@
 // It is setup to take a theming preference of light/dark but could have multiple preferences depending on use case.
 @mixin theme-mixin($name, $theme-preference) {
 
-  $main-typography: mat.define-legacy-typography-configmat.m2-define-typography-config(
+  $main-typography: mat.m2-define-typography-config(
     $font-family: 'Roboto, Arial, san-serif',
     $headline-5: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 24px, $line-height: 32px, $font-weight: bold),
     $headline-6: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 20px, $line-height: 32px, $font-weight: bold),
@@ -346,8 +368,8 @@
         );
 
         $light-theme-background: (
-            status-bar: map_get($mat-grey, 300),
-            app-bar:    map_get($mat-grey, 100),
+            status-bar: map.get($mat-grey, 300),
+            app-bar:    map.get($mat-grey, 100),
             background: mat.m2-get-color-from-palette($light, 700),
             hover:      rgba(black, 0.04),
             card:       mat.m2-get-color-from-palette($light, 800),
@@ -355,11 +377,11 @@
             disabled-button: rgba(mat.m2-get-color-from-palette($dark, 500), 0.12),
             raised-button: mat.m2-get-color-from-palette($light, 500),
             focused-button: $dark-focused,
-            selected-button: map_get($mat-grey, 300),
-            selected-disabled-button: map_get($mat-grey, 400),
-            disabled-button-toggle: map_get($mat-grey, 200),
-            unselected-chip: map_get($mat-grey, 300),
-            disabled-list-option: map_get($mat-grey, 200),
+            selected-button: map.get($mat-grey, 300),
+            selected-disabled-button: map.get($mat-grey, 400),
+            disabled-button-toggle: map.get($mat-grey, 200),
+            unselected-chip: map.get($mat-grey, 300),
+            disabled-list-option: map.get($mat-grey, 200),
         );
 
         $dark-theme-foreground: (
@@ -382,18 +404,18 @@
 
         $dark-theme-background: (
             status-bar: mat.m2-get-color-from-palette($light, 500),
-            app-bar:    map_get($mat-grey, 900),
+            app-bar:    map.get($mat-grey, 900),
             background: mat.m2-get-color-from-palette($dark, 500),
             hover:      rgba(white, 0.04),
             card:       mat.m2-get-color-from-palette($dark, 100),
             dialog:     mat.m2-get-color-from-palette($dark, 100),
             disabled-button: rgba(white, 0.12),
-            raised-button: map-get($mat-grey, 800),
+            raised-button: map.get($mat-grey, 800),
             focused-button: $light-focused,
-            selected-button: map_get($mat-grey, 900),
-            selected-disabled-button: map_get($mat-grey, 800),
+            selected-button: map.get($mat-grey, 900),
+            selected-disabled-button: map.get($mat-grey, 800),
             disabled-button-toggle: black,
-            unselected-chip: map_get($mat-grey, 700),
+            unselected-chip: map.get($mat-grey, 700),
             disabled-list-option: black,
         );
 

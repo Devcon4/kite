@@ -1,5 +1,5 @@
-@import 'theme.scss';
-@include create-project(kite, true);
+@use 'theme.scss' as theme;
+@include theme.create-project(kite, true);
 
 a {
   color: var(--kite-primary);

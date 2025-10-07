@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 
 export type Link = {
@@ -19,9 +19,9 @@ type LinkResponse = {
 
 @Injectable({ providedIn: 'root' })
 export class LinkState {
-  links = new BehaviorSubject<Link[]>([]);
+  private httpClient = inject(HttpClient);
 
-  constructor(private httpClient: HttpClient) {}
+  links = new BehaviorSubject<Link[]>([]);
 
   public getLinks() {
     this.httpClient

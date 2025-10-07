@@ -1,6 +1,6 @@
 
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,7 +10,8 @@ import { RouterModule } from '@angular/router';
     imports: [RouterModule]
 })
 export class AppComponent {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
+
 
   ngOnInit() {
     this.httpClient

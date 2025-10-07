@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -29,11 +29,10 @@ import { LinkCardComponent } from '../link-card/link-card.component';
     ]
 })
 export class LaunchpadComponent implements OnInit {
-  constructor(
-    private linkState: LinkState,
-    private themeState: ThemeState,
-    private settingState: SettingState
-  ) {}
+  private linkState = inject(LinkState);
+  private themeState = inject(ThemeState);
+  private settingState = inject(SettingState);
+
 
   keySort = this.settingState.globalSettings.pipe(
     map((s) =>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { Link } from '../../../services/link.state';
 import { ThemeState } from '../../../services/theme.state';
@@ -11,9 +11,10 @@ import { ThemeState } from '../../../services/theme.state';
     imports: [CommonModule, MatChipsModule]
 })
 export class LinkCardComponent implements OnInit {
+  private themeState = inject(ThemeState);
+
   @Input()
   link: Link | undefined;
-  constructor(private themeState: ThemeState) {}
   selectTagColor = this.themeState.hashColor;
   kindColor = this.themeState.ingressKindColor;
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, tap } from 'rxjs';
 
 export type GlobalSetting = {
@@ -15,9 +15,9 @@ type SettingResponse = {
   providedIn: 'root',
 })
 export class SettingState {
-  globalSettings = new BehaviorSubject<GlobalSetting | undefined>(undefined);
+  private httpClient = inject(HttpClient);
 
-  constructor(private httpClient: HttpClient) {}
+  globalSettings = new BehaviorSubject<GlobalSetting | undefined>(undefined);
 
   public getSettings() {
     this.httpClient

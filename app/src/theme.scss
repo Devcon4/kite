@@ -52,13 +52,13 @@
 // It is setup to take a theming preference of light/dark but could have multiple preferences depending on use case.
 @mixin theme-mixin($name, $theme-preference) {
 
-  $main-typography: mat.define-legacy-typography-configmat.define-typography-config(
+  $main-typography: mat.define-legacy-typography-configmat.m2-define-typography-config(
     $font-family: 'Roboto, Arial, san-serif',
-    $headline-5: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 24px, $line-height: 32px, $font-weight: bold),
-    $headline-6: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 20px, $line-height: 32px, $font-weight: bold),
-    $subtitle-1: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 32px, $line-height: 28px, $font-weight: 200),
-    $body-1: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 15px, $line-height: 24px, $font-weight: bold),
-    $body-2: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 1rem)
+    $headline-5: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 24px, $line-height: 32px, $font-weight: bold),
+    $headline-6: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 20px, $line-height: 32px, $font-weight: bold),
+    $subtitle-1: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 32px, $line-height: 28px, $font-weight: 200),
+    $body-1: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 15px, $line-height: 24px, $font-weight: bold),
+    $body-2: mat.m2-define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 1rem)
   );
 
     // @include mat-core();
@@ -319,40 +319,40 @@
 
         // Create palettes based on the color maps.
         // mat-palette($color-map, $default, $lighter, $darker, $text)
-        $primary-palette: mat.define-palette($primary);
-        $accent-palette: mat.define-palette($secondary, 200, 200, 200, 200);
-        $warn-palette: mat.define-palette($actions, 600, 600, 200, 200);
+        $primary-palette: mat.m2-define-palette($primary);
+        $accent-palette: mat.m2-define-palette($secondary, 200, 200, 200, 200);
+        $warn-palette: mat.m2-define-palette($actions, 600, 600, 200, 200);
 
         // Set the foreground/background color map.
         // ðŸŽ¨ This might need to be tweeked depending on colors.
         // We have two because we expect to create a light theme and a dark theme.
         $light-theme-foreground: (
-            base:              mat.get-color-from-palette($dark, 500),
+            base:              mat.m2-get-color-from-palette($dark, 500),
             divider:           $dark-dividers,
             dividers:          $dark-dividers,
             disabled:          $dark-disabled-text,
-            disabled-button:   rgba(mat.get-color-from-palette($dark, 500), 0.26),
+            disabled-button:   rgba(mat.m2-get-color-from-palette($dark, 500), 0.26),
             disabled-text:     $dark-disabled-text,
             elevation:         black,
             hint-text:         $dark-disabled-text,
             secondary-text:    $dark-secondary-text,
-            icon:              rgba(mat.get-color-from-palette($dark, 500), 0.54),
-            icons:             rgba(mat.get-color-from-palette($dark, 500), 0.54),
-            text:              rgba(mat.get-color-from-palette($dark, 500), 0.87),
-            slider-min:        rgba(mat.get-color-from-palette($dark, 500), 0.87),
-            slider-off:        rgba(mat.get-color-from-palette($dark, 500), 0.26),
-            slider-off-active: rgba(mat.get-color-from-palette($dark, 500), 0.38),
+            icon:              rgba(mat.m2-get-color-from-palette($dark, 500), 0.54),
+            icons:             rgba(mat.m2-get-color-from-palette($dark, 500), 0.54),
+            text:              rgba(mat.m2-get-color-from-palette($dark, 500), 0.87),
+            slider-min:        rgba(mat.m2-get-color-from-palette($dark, 500), 0.87),
+            slider-off:        rgba(mat.m2-get-color-from-palette($dark, 500), 0.26),
+            slider-off-active: rgba(mat.m2-get-color-from-palette($dark, 500), 0.38),
         );
 
         $light-theme-background: (
             status-bar: map_get($mat-grey, 300),
             app-bar:    map_get($mat-grey, 100),
-            background: mat.get-color-from-palette($light, 700),
+            background: mat.m2-get-color-from-palette($light, 700),
             hover:      rgba(black, 0.04),
-            card:       mat.get-color-from-palette($light, 800),
-            dialog:     mat.get-color-from-palette($light, 800),
-            disabled-button: rgba(mat.get-color-from-palette($dark, 500), 0.12),
-            raised-button: mat.get-color-from-palette($light, 500),
+            card:       mat.m2-get-color-from-palette($light, 800),
+            dialog:     mat.m2-get-color-from-palette($light, 800),
+            disabled-button: rgba(mat.m2-get-color-from-palette($dark, 500), 0.12),
+            raised-button: mat.m2-get-color-from-palette($light, 500),
             focused-button: $dark-focused,
             selected-button: map_get($mat-grey, 300),
             selected-disabled-button: map_get($mat-grey, 400),
@@ -362,30 +362,30 @@
         );
 
         $dark-theme-foreground: (
-            base:              mat.get-color-from-palette($light, 200),
+            base:              mat.m2-get-color-from-palette($light, 200),
             divider:           $light-dividers,
             dividers:          $light-dividers,
             disabled:          $light-disabled-text,
-            disabled-button:   rgba(mat.get-color-from-palette($dark, 500), 0.3),
+            disabled-button:   rgba(mat.m2-get-color-from-palette($dark, 500), 0.3),
             disabled-text:     $light-disabled-text,
             elevation:         black,
             hint-text:         $light-disabled-text,
             secondary-text:    $light-secondary-text,
-            icon:              mat.get-color-from-palette($light, 200),
-            icons:             mat.get-color-from-palette($light, 200),
-            text:              mat.get-color-from-palette($light, 200),
-            slider-min:        mat.get-color-from-palette($dark, 500),
-            slider-off:        rgba(mat.get-color-from-palette($light, 500), 0.3),
-            slider-off-active: rgba(mat.get-color-from-palette($light, 500), 0.3),
+            icon:              mat.m2-get-color-from-palette($light, 200),
+            icons:             mat.m2-get-color-from-palette($light, 200),
+            text:              mat.m2-get-color-from-palette($light, 200),
+            slider-min:        mat.m2-get-color-from-palette($dark, 500),
+            slider-off:        rgba(mat.m2-get-color-from-palette($light, 500), 0.3),
+            slider-off-active: rgba(mat.m2-get-color-from-palette($light, 500), 0.3),
         );
 
         $dark-theme-background: (
-            status-bar: mat.get-color-from-palette($light, 500),
+            status-bar: mat.m2-get-color-from-palette($light, 500),
             app-bar:    map_get($mat-grey, 900),
-            background: mat.get-color-from-palette($dark, 500),
+            background: mat.m2-get-color-from-palette($dark, 500),
             hover:      rgba(white, 0.04),
-            card:       mat.get-color-from-palette($dark, 100),
-            dialog:     mat.get-color-from-palette($dark, 100),
+            card:       mat.m2-get-color-from-palette($dark, 100),
+            dialog:     mat.m2-get-color-from-palette($dark, 100),
             disabled-button: rgba(white, 0.12),
             raised-button: map-get($mat-grey, 800),
             focused-button: $light-focused,
@@ -397,7 +397,7 @@
         );
 
         // Wrap all of the maps into a theme map.
-        $dark-theme: mat.define-dark-theme((
+        $dark-theme: mat.m2-define-dark-theme((
           color: (
             primary: $primary-palette,
             accent: $accent-palette,
@@ -409,7 +409,7 @@
           typography: $main-typography,
         ));
 
-        $light-theme: mat.define-light-theme((
+        $light-theme: mat.m2-define-light-theme((
           color: (
             primary: $primary-palette,
             accent: $accent-palette,

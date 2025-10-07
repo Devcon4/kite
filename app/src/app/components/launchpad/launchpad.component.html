@@ -2,27 +2,20 @@
   <h1 class="header">{{ appName | async }}</h1>
   <button mat-icon-button color="secondary" (click)="toggleTheme()">
     @if (isDark | async) {
-      <mat-icon>light_mode</mat-icon>
-    }
-    @if (isLight | async) {
-      <mat-icon>dark_mode</mat-icon>
+    <mat-icon>light_mode</mat-icon>
+    } @if (isLight | async) {
+    <mat-icon>dark_mode</mat-icon>
     }
   </button>
 </div>
-@if (groupsObs | async; as groups) {
-  @for (group of groups.list | keyvalue: groups.sort; track group) {
-    <div
-      class="card card-color"
-      >
-      <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
-      <div class="links">
-        @for (l of group.value; track l) {
-          <kite-link-card
-            [style.border-color]="borderColor(l.kind)"
-            [link]="l"
-          ></kite-link-card>
-        }
-      </div>
-    </div>
-  }
-}
+@if (groupsObs | async; as groups) { @for (group of groups.list | keyvalue:
+groups.sort; track group) {
+<div class="card card-color">
+  <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
+  <div class="links">
+    @for (l of group.value; track l) {
+    <kite-link-card [style.border-color]="borderColor(l.kind)" [link]="l" />
+    }
+  </div>
+</div>
+} }

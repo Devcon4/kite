@@ -71,7 +71,8 @@
 //  you can delete this line and instead use:
 //    `@include mat.legacy-typography-hierarchy($main-typography);`
 @include mat.all-component-typographies($main-typography);
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
     body {
 

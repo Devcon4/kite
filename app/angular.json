@@ -78,11 +78,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "kite:build:production"
+              "buildTarget": "kite:build:production"
             },
             "development": {
-              "browserTarget": "kite:build:development",
-              "proxyConfig": "proxy.config.js"
+              "proxyConfig": "proxy.config.js",
+              "buildTarget": "kite:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "kite:build"
+            "buildTarget": "kite:build"
           }
         },
         "test": {

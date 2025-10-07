@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { LaunchpadComponent } from './launchpad.component';
 
@@ -8,9 +9,8 @@ describe('LaunchpadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-    imports: [LaunchpadComponent]
-})
-    .compileComponents();
+      imports: [LaunchpadComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LaunchpadComponent);
     component = fixture.componentInstance;

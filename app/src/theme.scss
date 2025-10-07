@@ -52,7 +52,7 @@
 // It is setup to take a theming preference of light/dark but could have multiple preferences depending on use case.
 @mixin theme-mixin($name, $theme-preference) {
 
-  $main-typography: mat.define-typography-config(
+  $main-typography: mat.define-legacy-typography-configmat.define-legacy-typography-config(
     $font-family: 'Roboto, Arial, san-serif',
     $headline: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 24px, $line-height: 32px, $font-weight: bold),
     $title: mat.define-typography-level($font-family: 'Roboto, Arial, san-serif', $font-size: 20px, $line-height: 32px, $font-weight: bold),
@@ -62,7 +62,16 @@
   );
 
     // @include mat-core();
-    @include mat.core($main-typography);
+    // TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy($main-typography);`
+@include mat.all-legacy-component-typographies($main-typography);
+@include mat.legacy-core();
 
     body {
 
@@ -420,14 +429,14 @@
             --prefers-light: true;
             --prefers-dark: false;
 
-            @include mat.all-component-themes($light-theme);
+            @include mat.all-legacy-component-themes($light-theme);
         }
 
         @if $theme-preference == dark {
             --prefers-light: false;
             --prefers-dark: true;
 
-            @include mat.all-component-themes($dark-theme);
+            @include mat.all-legacy-component-themes($dark-theme);
 
         }
     }

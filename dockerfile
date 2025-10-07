@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 as api
+FROM mcr.microsoft.com/dotnet/sdk:9.0 as api
 
 ARG VERSION=1.0.0
 
@@ -12,7 +12,7 @@ COPY api/ ./
 
 RUN dotnet publish -c Release --no-restore -o /build/publish /p:Version=${VERSION} ./
 
-FROM node:16-alpine as app
+FROM node:24-alpine as app
 WORKDIR /build
 
 COPY app/package.json ./
@@ -24,20 +24,12 @@ COPY app/ ./
 
 RUN npm run build;
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 as entry
-ARG USER=appuser
-ARG UID=1001
-ARG GID=1001
-
-RUN groupadd -g $GID $USER
-RUN useradd --uid $UID --gid $GID --create-home --shell /bin/bash $USER
-RUN mkdir /app && chown -R $USER:$USER /app
-
-USER $USER
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 as entry
+USER $APP_UID
 
 WORKDIR /app
-COPY --chown=$USER:$USER --from=api /build/publish .
-COPY --chown=$USER:$USER --from=app /build/dist/kite ./wwwroot/
+COPY --chown=$APP_UID:$APP_UID --from=api /build/publish .
+COPY --chown=$APP_UID:$APP_UID --from=app /build/dist/kite/browser ./wwwroot/
 
 # Have to use higher port due to non-root user
 ENV ASPNETCORE_URLS="http://*:8080"

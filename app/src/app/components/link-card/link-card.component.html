@@ -8,14 +8,14 @@
 <div class="namespace" *ngIf="link?.namespaceProperty">
   Namespace: {{ link?.namespaceProperty }}
 </div>
-<mat-chip-list
+<mat-chip-listbox
   class="tags"
   aria-label="Tags"
   *ngIf="link?.tags && (link?.tags || []).length > 0"
 >
-  <mat-chip
+  <mat-chip-option
     [style.border-color]="selectTagColor(tag)"
     *ngFor="let tag of link?.tags"
-    >{{ tag | titlecase }}</mat-chip
+    >{{ tag | titlecase }}</mat-chip-option
   >
-</mat-chip-list>
+</mat-chip-listbox>

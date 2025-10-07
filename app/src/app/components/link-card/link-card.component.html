@@ -4,18 +4,24 @@
   </h3>
   <div class="kind">{{ link?.kind }}</div>
 </div>
-<p class="description" *ngIf="link?.description">{{ link?.description }}</p>
-<div class="namespace" *ngIf="link?.namespaceProperty">
-  Namespace: {{ link?.namespaceProperty }}
-</div>
-<mat-chip-listbox
-  class="tags"
-  aria-label="Tags"
-  *ngIf="link?.tags && (link?.tags || []).length > 0"
->
-  <mat-chip-option
-    [style.border-color]="selectTagColor(tag)"
-    *ngFor="let tag of link?.tags"
-    >{{ tag | titlecase }}</mat-chip-option
-  >
-</mat-chip-listbox>
+@if (link?.description) {
+  <p class="description">{{ link?.description }}</p>
+}
+@if (link?.namespaceProperty) {
+  <div class="namespace">
+    Namespace: {{ link?.namespaceProperty }}
+  </div>
+}
+@if (link?.tags && (link?.tags || []).length > 0) {
+  <mat-chip-listbox
+    class="tags"
+    aria-label="Tags"
+    >
+    @for (tag of link?.tags; track tag) {
+      <mat-chip-option
+        [style.border-color]="selectTagColor(tag)"
+        >{{ tag | titlecase }}</mat-chip-option
+        >
+      }
+    </mat-chip-listbox>
+  }

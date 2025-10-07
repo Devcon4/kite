@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
     selector: 'kite-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    imports: [RouterModule, CommonModule]
+    imports: [RouterModule]
 })
 export class AppComponent {
   constructor(private httpClient: HttpClient) {}

@@ -1,22 +1,28 @@
 <div class="banner card card-color">
   <h1 class="header">{{ appName | async }}</h1>
   <button mat-icon-button color="secondary" (click)="toggleTheme()">
-    <mat-icon *ngIf="isDark | async">light_mode</mat-icon>
-    <mat-icon *ngIf="isLight | async">dark_mode</mat-icon>
+    @if (isDark | async) {
+      <mat-icon>light_mode</mat-icon>
+    }
+    @if (isLight | async) {
+      <mat-icon>dark_mode</mat-icon>
+    }
   </button>
 </div>
-<ng-container *ngIf="groupsObs | async as groups">
-  <div
-    class="card card-color"
-    *ngFor="let group of groups.list | keyvalue: groups.sort"
-  >
-    <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
-    <div class="links">
-      <kite-link-card
-        [style.border-color]="borderColor(l.kind)"
-        *ngFor="let l of group.value"
-        [link]="l"
-      ></kite-link-card>
+@if (groupsObs | async; as groups) {
+  @for (group of groups.list | keyvalue: groups.sort; track group) {
+    <div
+      class="card card-color"
+      >
+      <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
+      <div class="links">
+        @for (l of group.value; track l) {
+          <kite-link-card
+            [style.border-color]="borderColor(l.kind)"
+            [link]="l"
+          ></kite-link-card>
+        }
+      </div>
     </div>
-  </div>
-</ng-container>
+  }
+}

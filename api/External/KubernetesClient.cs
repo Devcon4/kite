@@ -22,11 +22,13 @@ public class KubernetesClient {
 	private readonly Kubernetes _client;
 	private readonly IngressOptions _ingressOptions;
 	private readonly IngressRouteOptions _ingressRouteOptions;
+	private readonly HttpRouteRouteOptions _httpRouteOptions;
 
-	public KubernetesClient(Kubernetes client, IOptionsMonitor<IngressOptions> ingressOptions, IOptionsMonitor<IngressRouteOptions> ingressRouteOptions) {
+	public KubernetesClient(Kubernetes client, IOptionsSnapshot<IngressOptions> ingressOptions, IOptionsSnapshot<IngressRouteOptions> ingressRouteOptions, IOptionsSnapshot<HttpRouteRouteOptions> httpRouteOptions) {
 		_client = client;
-		_ingressOptions = ingressOptions.CurrentValue;
-		_ingressRouteOptions = ingressRouteOptions.CurrentValue;
+		_ingressOptions = ingressOptions.Value;
+		_ingressRouteOptions = ingressRouteOptions.Value;
+		_httpRouteOptions = httpRouteOptions.Value;
 	}
 
 	public async Task<IEnumerable<Ingress>> GetIngresses() {
@@ -64,8 +66,42 @@ public class KubernetesClient {
 				i.metadata.annotations!.Where(a => a.Key.StartsWith(Annotations.BASE))
 			))) ?? new List<Ingress>();
 	}
+
+	public async Task<IEnumerable<Ingress>> GetHttpRoutes() {
+		if (!_httpRouteOptions.Enabled)
+			return new List<Ingress>();
+
+		object ingresses = await _client.ListClusterCustomObjectAsync("gateway.networking.k8s.io", "v1beta1", "httproutes", labelSelector: _ingressOptions?.LabelSelector);
+
+		var converted = JsonSerializer.Deserialize(ingresses.ToString() ?? "", AppJsonSerializerContext.Default.HttpRouteList);
+		return converted?.items
+			.Where(i => this._httpRouteOptions!.AnnotationSelector.Count() > 0 ? this._httpRouteOptions!.AnnotationSelector.All(a => i.metadata.annotations!.Any(ia => ia.Key == a.Key && ia.Value == a.Value)) : true)
+			.Where(i => !i.metadata.annotations!.Where(a => a.Key == Annotations.ENABLED && a.Value == false.ToString()).Any())
+			.SelectMany(i => i.spec.rules.Select(r => new Ingress(
+				i.metadata.name,
+				i.metadata.namespaceProperty,
+				r.hostnames != null && r.hostnames.Any() ? r.hostnames.First() : null,
+				"HttpRoute",
+				i.metadata.annotations!.Where(a => a.Key.StartsWith(Annotations.BASE))
+			))) ?? new List<Ingress>();
+
+	}
+
 }
 
+// HttpRoute
+public record HttpRouteList(IEnumerable<HttpRoute> items);
+public record HttpRoute(HttpRouteMetadata metadata, HttpRouteSpec spec);
+public class HttpRouteMetadata {
+	public string? name { get; set; }
+	[JsonPropertyName("namespace")]
+	public string? namespaceProperty { get; set; }
+	public IDictionary<string, string>? annotations { get; set; } = new Dictionary<string, string>();
+};
+public record HttpRouteSpec(IEnumerable<HttpRouteSpecRule> rules);
+public record HttpRouteSpecRule(IEnumerable<string>? hostnames);
+
+// IngressRoute
 public record IngressRouteList(IEnumerable<IngressRoute> items);
 public record IngressRoute(IngressRouteMetadata metadata, IngressRouteSpec spec);
 public class IngressRouteMetadata {

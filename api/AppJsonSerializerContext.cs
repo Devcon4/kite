@@ -20,5 +20,6 @@ namespace Kite;
 [JsonSerializable(typeof(IngressRouteMetadata))]
 [JsonSerializable(typeof(IngressRouteSpec))]
 [JsonSerializable(typeof(IngressRouteSpecRoute))]
+[JsonSerializable(typeof(HttpRouteList))]
 [JsonSerializable(typeof(StaticRouteOptions))]
 public partial class AppJsonSerializerContext : JsonSerializerContext { }

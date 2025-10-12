@@ -20,6 +20,7 @@ builder.Configuration
 
 builder.Services.AddOptionsWithValidateOnStart<IngressOptions>().Bind(builder.Configuration.GetSection("Kite:Ingress"));
 builder.Services.AddOptionsWithValidateOnStart<IngressRouteOptions>().Bind(builder.Configuration.GetSection("Kite:IngressRoute"));
+builder.Services.AddOptionsWithValidateOnStart<HttpRouteRouteOptions>().Bind(builder.Configuration.GetSection("Kite:HttpRoute"));
 builder.Services.AddOptionsWithValidateOnStart<StaticRouteOptions>().Bind(builder.Configuration.GetSection("Kite:StaticRoute"));
 builder.Services.AddOptionsWithValidateOnStart<SettingOptions>().Bind(builder.Configuration.GetSection("Kite:Settings"));
 
@@ -33,7 +34,6 @@ builder.Services.AddJackdaw(opts => {
 	opts.UseInMemoryQueue();
 });
 
-Console.WriteLine($"Jackdaw registered handlers");
 var app = builder.Build();
 
 app.UseDefaultFiles();

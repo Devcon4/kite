@@ -18,6 +18,13 @@ public class IngressRouteOptions {
 };
 
 [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
+public class HttpRouteRouteOptions {
+	public bool Enabled { get; set; } = false;
+	public string LabelSelector { get; set; } = String.Empty;
+	public IDictionary<string, string> AnnotationSelector { get; set; } = new Dictionary<string, string>();
+};
+
+[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]
 public class StaticRouteOptions {
 	public bool Enabled { get; set; } = true;
 

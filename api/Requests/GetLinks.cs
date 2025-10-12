@@ -33,6 +33,12 @@ public sealed class GetLinksHandler(KubernetesClient kubernetesClient, IOptionsS
 		return PathSchema(final);
 	}
 
+	public string HttpRoutePath(string? path) {
+		if (path is null)
+			return "";
+		return path;
+	}
+
 	public string PathSchema(string? path) {
 		if (path is null)
 			return "";
@@ -47,8 +53,9 @@ public sealed class GetLinksHandler(KubernetesClient kubernetesClient, IOptionsS
 	public async Task<GetLinksResponse> Handle(GetLinksRequest request, CancellationToken cancellationToken) {
 		var ingresses = (await kubernetesClient.GetIngresses()).Select(Mapper.IngressToLink).Select(i => i with { path = PathSchema(i.path) });
 		var ingressRoutes = (await kubernetesClient.GetIngressRoutes()).Select(Mapper.IngressToLink).Select(i => i with { path = IngressRoutePath(i.path) });
+		var httpRoutes = (await kubernetesClient.GetHttpRoutes()).Select(Mapper.IngressToLink).Select(i => i with { path = HttpRoutePath(i.path) });
 		var staticRoutes = _staticRouteOptions.Enabled ? _staticRouteOptions.Routes.Select(Mapper.StaticRouteToLink).Select(i => i with { path = PathSchema(i.path) }) : new List<Link>();
-		var routes = ingresses.Concat(ingressRoutes).Concat(staticRoutes);
+		var routes = ingresses.Concat(ingressRoutes).Concat(httpRoutes).Concat(staticRoutes);
 		return new GetLinksResponse(routes.ToList(), routes.Count());
 	}
 

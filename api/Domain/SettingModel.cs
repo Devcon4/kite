@@ -1,2 +1,3 @@
 namespace Kite.Domain;
-public record SettingModel(string? AppName, IDictionary<string, int> ? GroupOrder);
+
+public record SettingModel(string? AppName, IDictionary<string, int>? GroupOrder);

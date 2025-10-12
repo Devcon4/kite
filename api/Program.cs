@@ -1,40 +1,65 @@
-using System.Reflection;
+using Jackdaw.Core;
+using Jackdaw.Interfaces;
 using k8s;
+using Kite;
 using Kite.External;
-using MediatR;
+using Kite.Requests;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateSlimBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.ConfigureHttpJsonOptions(options => {
+	options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+});
+
 builder.Configuration
-  .AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, "appsettings.json"), optional: true, reloadOnChange: true)
-  .AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, "secrets/appsettings.json"), optional: true, reloadOnChange: true)
-  .AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, $"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
-  .AddEnvironmentVariables();
+	.AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, "appsettings.json"), optional: true, reloadOnChange: true)
+	.AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, "secrets/appsettings.json"), optional: true, reloadOnChange: true)
+	.AddJsonFile(Path.Combine(builder.Environment.ContentRootPath, $"appsettings.{builder.Environment.EnvironmentName}.json"), optional: true, reloadOnChange: true)
+	.AddEnvironmentVariables();
 
-builder.Services.Configure<IngressOptions>(builder.Configuration.GetSection("Kite:Ingress"));
-builder.Services.Configure<IngressRouteOptions>(builder.Configuration.GetSection("Kite:IngressRoute"));
-builder.Services.Configure<StaticRouteOptions>(builder.Configuration.GetSection("Kite:StaticRoute"));
-builder.Services.Configure<SettingOptions>(builder.Configuration.GetSection("Kite:Settings"));
+builder.Services.AddOptionsWithValidateOnStart<IngressOptions>().Bind(builder.Configuration.GetSection("Kite:Ingress"));
+builder.Services.AddOptionsWithValidateOnStart<IngressRouteOptions>().Bind(builder.Configuration.GetSection("Kite:IngressRoute"));
+builder.Services.AddOptionsWithValidateOnStart<StaticRouteOptions>().Bind(builder.Configuration.GetSection("Kite:StaticRoute"));
+builder.Services.AddOptionsWithValidateOnStart<SettingOptions>().Bind(builder.Configuration.GetSection("Kite:Settings"));
 
-builder.Services.AddScoped<IKubernetesFactory, KubernetesFactory>();
+builder.Services.AddSingleton<IKubernetesFactory, KubernetesFactory>();
 
-builder.Services.AddScoped<Kubernetes>(s => s.GetRequiredService<IKubernetesFactory>().CreateClient());
-builder.Services.AddScoped<KubernetesClient>();
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddSingleton<Kubernetes>(s => s.GetRequiredService<IKubernetesFactory>().CreateClient());
+builder.Services.AddSingleton<KubernetesClient>();
 
+// Register jackdaw
+builder.Services.AddJackdaw(opts => {
+	opts.UseInMemoryQueue();
+});
+
+Console.WriteLine($"Jackdaw registered handlers");
 var app = builder.Build();
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions {
+	OnPrepareResponse = ctx => {
+		var time = 60 * 60 * 24 * 30; // 30 days
+		ctx.Context.Response.Headers.CacheControl = "public,max-age=" + time.ToString("0");
+	}
+});
 
-app.UseAuthorization();
+// Minimal API endpoints
+var apiGroup = app.MapGroup("/api");
 
-app.MapControllers();
+apiGroup.MapGet("/link", async (IMediator mediator) => {
+	return await mediator.Send(new GetLinksRequest());
+})
+.WithName("getLinks")
+.Produces<GetLinksResponse>();
+
+apiGroup.MapGet("/setting", async (IMediator mediator) => {
+	return await mediator.Send(new GetSettingsRequest());
+})
+.WithName("getSettings")
+.Produces<GetSettingsResponse>();
 
 app.MapFallbackToFile("index.html");
 
+Console.WriteLine("Starting app");
 app.Run();

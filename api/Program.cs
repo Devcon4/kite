@@ -26,8 +26,8 @@ builder.Services.AddOptionsWithValidateOnStart<SettingOptions>().Bind(builder.Co
 
 builder.Services.AddSingleton<IKubernetesFactory, KubernetesFactory>();
 
-builder.Services.AddSingleton<Kubernetes>(s => s.GetRequiredService<IKubernetesFactory>().CreateClient());
-builder.Services.AddSingleton<KubernetesClient>();
+builder.Services.AddScoped(s => s.GetRequiredService<IKubernetesFactory>().CreateClient());
+builder.Services.AddScoped<KubernetesClient>();
 
 // Register jackdaw
 builder.Services.AddJackdaw(opts => {

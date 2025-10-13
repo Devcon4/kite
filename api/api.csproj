@@ -8,7 +8,7 @@
 		<!-- <PublishTrimmed>true</PublishTrimmed> -->
     <!-- <InvariantGlobalization>false</InvariantGlobalization> -->
     <!-- <TrimMode>full</TrimMode> -->
-    <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+		<JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
     <!-- <IlcGenerateDgmlFile>true</IlcGenerateDgmlFile> -->
     <!-- <StaticallyLinked>true</StaticallyLinked> -->
     <!-- <IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata> -->

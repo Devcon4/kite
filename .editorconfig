@@ -11,6 +11,10 @@ tab_width = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# yml files keep spaces
+[*.yml]
+indent_style = space
+
 # C# files
 [*.cs]
 # New line preferences - Keep opening braces on the same line

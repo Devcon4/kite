@@ -36,6 +36,9 @@ public sealed class GetLinksHandler(KubernetesClient kubernetesClient, IOptionsS
 	public string HttpRoutePath(string? path) {
 		if (path is null)
 			return "";
+		if (!(path.StartsWith("https://") || path.StartsWith("http://"))) {
+			path = $"https://{path}";
+		}
 		return path;
 	}
 

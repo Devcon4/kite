@@ -71,8 +71,21 @@ public class KubernetesClient {
 		if (!_httpRouteOptions.Enabled)
 			return new List<Ingress>();
 
-		object ingresses = await _client.ListClusterCustomObjectAsync("gateway.networking.k8s.io", "v1beta1", "httproutes", labelSelector: _ingressOptions?.LabelSelector);
+		static string CalcPath(IEnumerable<string>? hostnames, string path, IDictionary<string, string>? annotations = null) {
+			// If there is a specific path annotation, use that instead of the calculated one
+			if (annotations != null && annotations.TryGetValue(Annotations.PATH, out var annotatedPath) && !string.IsNullOrWhiteSpace(annotatedPath)) {
+				return annotatedPath;
+			}
 
+			if (hostnames == null || !hostnames.Any())
+				return path;
+
+			var first = hostnames.First();
+
+			return $"https://{first}{(path.StartsWith("/") ? path : $"/{path}")}";
+		}
+
+		object ingresses = await _client.ListClusterCustomObjectAsync("gateway.networking.k8s.io", "v1beta1", "httproutes", labelSelector: _ingressOptions?.LabelSelector);
 		var converted = JsonSerializer.Deserialize(ingresses.ToString() ?? "", AppJsonSerializerContext.Default.HttpRouteList);
 		return converted?.items
 			.Where(i => this._httpRouteOptions!.AnnotationSelector.Count() > 0 ? this._httpRouteOptions!.AnnotationSelector.All(a => i.metadata.annotations!.Any(ia => ia.Key == a.Key && ia.Value == a.Value)) : true)
@@ -80,7 +93,7 @@ public class KubernetesClient {
 			.SelectMany(i => i.spec.rules.Select(r => new Ingress(
 				i.metadata.name,
 				i.metadata.namespaceProperty,
-				r.hostnames != null && r.hostnames.Any() ? r.hostnames.First() : null,
+				CalcPath(i.spec.hostnames, r.matches.First().path.value, i.metadata.annotations),
 				"HttpRoute",
 				i.metadata.annotations!.Where(a => a.Key.StartsWith(Annotations.BASE))
 			))) ?? new List<Ingress>();
@@ -98,8 +111,17 @@ public class HttpRouteMetadata {
 	public string? namespaceProperty { get; set; }
 	public IDictionary<string, string>? annotations { get; set; } = new Dictionary<string, string>();
 };
-public record HttpRouteSpec(IEnumerable<HttpRouteSpecRule> rules);
-public record HttpRouteSpecRule(IEnumerable<string>? hostnames);
+public record HttpRouteSpec(IEnumerable<string> hostnames, IEnumerable<HttpRouteSpecRule> rules);
+public record HttpRouteSpecRule(IEnumerable<HttpRouteSpecMatch> matches, IEnumerable<HttpRouteSpecBackendRefs> backendRefs);
+public class HttpRouteSpecBackendRefs {
+	public string? name { get; set; }
+	[JsonPropertyName("namespace")]
+	public string? namespaceProperty { get; set; }
+	public int? port { get; set; }
+	public int? weight { get; set; }
+};
+public record HttpRouteSpecMatch(HttpRouteSpecMatchPath path);
+public record HttpRouteSpecMatchPath(string type, string value);
 
 // IngressRoute
 public record IngressRouteList(IEnumerable<IngressRoute> items);

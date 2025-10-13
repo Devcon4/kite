@@ -21,3 +21,11 @@
 .idea/
 *.tmproj
 .vscode/
+
+../../.github/
+../../.vs/
+../../api/
+../../app/
+../../k8s/
+../../*.sln
+../../dockerfile

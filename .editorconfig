@@ -6,10 +6,8 @@ root = true
 # All files
 [*]
 charset = utf-8
-indent_style = tab
 tab_width = 2
-insert_final_newline = true
-trim_trailing_whitespace = true
+indent_style = space
 
 # yml files keep spaces
 [*.yml]
@@ -17,6 +15,10 @@ indent_style = space
 
 # C# files
 [*.cs]
+indent_style = tab
+tab_width = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
 # New line preferences - Keep opening braces on the same line
 csharp_new_line_before_open_brace = none
 

@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  afterNextRender,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,6 +26,7 @@ import { SettingState } from '../../../services/setting.state';
 import { ThemeState, ThemeType } from '../../../services/theme.state';
 import { LinkCardComponent } from '../link-card/link-card.component';
 
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import Fuse from 'fuse.js';
 const filterLinks = (links: Link[], filter: string) => {
@@ -60,6 +68,14 @@ const filterLinks = (links: Link[], filter: string) => {
   ],
 })
 export class LaunchpadComponent implements OnInit {
+  constructor() {
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.initialLoadComplete.set(true);
+      }, 500);
+    });
+  }
+
   private linkState = inject(LinkState);
   private themeState = inject(ThemeState);
   private settingState = inject(SettingState);
@@ -73,23 +89,29 @@ export class LaunchpadComponent implements OnInit {
       s?.groupOrder ? lookupSort(s!.groupOrder, 'Desc') : keyValueSort('Desc')
     )
   );
+  initialLoadComplete = signal(false);
+  enterAnimation = computed(() =>
+    this.initialLoadComplete() ? 'card-enter' : ''
+  );
 
-  groupsObs = combineLatest([
-    this.linkState.linksFiltered,
-    this.keySort,
-    this.textFilter.valueChanges.pipe(
-      debounceTime(120),
-      startWith(this.activatedRoute.snapshot.queryParamMap.get('q') || '')
-    ),
-  ]).pipe(
-    tap(([_, __, t]) =>
-      this.router.navigate([], {
-        queryParams: t ? { q: t } : {},
-        preserveFragment: !t,
-      })
-    ),
-    map(([l, s, t]) => [filterLinks(l, t), s] as const),
-    map(([l, s]) => ({ list: groupBy(l, (o) => o.group), sort: s }))
+  groups = toSignal(
+    combineLatest([
+      this.linkState.linksFiltered,
+      this.keySort,
+      this.textFilter.valueChanges.pipe(
+        debounceTime(120),
+        startWith(this.activatedRoute.snapshot.queryParamMap.get('q') || '')
+      ),
+    ]).pipe(
+      tap(([_, __, t]) =>
+        this.router.navigate([], {
+          queryParams: t ? { q: t } : {},
+          preserveFragment: !t,
+        })
+      ),
+      map(([l, s, t]) => [filterLinks(l, t), s] as const),
+      map(([l, s]) => ({ list: groupBy(l, (o) => o.group), sort: s }))
+    )
   );
 
   isDark = this.themeState.theme.pipe(
@@ -115,15 +137,5 @@ export class LaunchpadComponent implements OnInit {
     this.textFilter.setValue(
       this.activatedRoute.snapshot.queryParamMap.get('q') || ''
     );
-
-    // Handle scrolling to fragment on page load/refresh
-    // this.activatedRoute.fragment.subscribe((fragment) => {
-    //   if (fragment) {
-    //     // Use setTimeout to ensure DOM is ready after async data loads
-    //     setTimeout(() => {
-    //       this.viewportScroller.scrollToAnchor(fragment);
-    //     }, 100);
-    //   }
-    // });
   }
 }

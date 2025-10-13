@@ -31,9 +31,13 @@
   </mat-form-field>
 </div>
 
-@if (groupsObs | async; as groups) { @for (group of groups.list | keyvalue:
-groups.sort; track group.key) { @let key = group.key || 'default' | titlecase;
-<section class="group card-color" [id]="key">
+@if (groups(); as groups) { @for (group of groups.list | keyvalue: groups.sort;
+track group.key) { @let key = group.key || 'default' | titlecase;
+<section
+  class="group card-color"
+  [id]="key"
+  [class.initial-load-complete]="initialLoadComplete()"
+>
   <h2 class="header group-header">
     <a routerLink="./" [fragment]="key"> {{ key }}</a>
   </h2>
@@ -42,7 +46,7 @@ groups.sort; track group.key) { @let key = group.key || 'default' | titlecase;
     <kite-link-card
       [style.border-color]="borderColor(l.kind)"
       [link]="l"
-      animate.enter="card-enter"
+      [animate.enter]="enterAnimation()"
       animate.leave="card-leave"
     />
     }

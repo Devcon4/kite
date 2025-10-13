@@ -95,9 +95,22 @@ kite-link-card {
   flex-basis: 40%;
   // transition only opacity and transform for smoother animations
   transition: opacity 250ms ease-in-out, transform 250ms ease-in-out;
-  animation-fill-mode: forwards;
 
 /* Starting state for transitions */
+  // @starting-style {
+  //   opacity: 0;
+  //   transform: translateY(20px) scale(0.95);
+  // }
+}
+
+.group:not(.initial-load-complete) > kite-link-card {
+  @starting-style {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.group.initial-load-complete > kite-link-card {
   @starting-style {
     opacity: 0;
     transform: translateY(20px) scale(0.95);

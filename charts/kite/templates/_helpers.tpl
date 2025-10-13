@@ -66,7 +66,9 @@ Create the name of the service account to use
 {{- define "helm.namespace" -}}
 {{- if .Values.namespaceOverride -}}
 {{- .Values.namespaceOverride -}}
-{{- else -}}
+{{- else if ne .Release.Namespace "default" -}}
 {{- .Release.Namespace -}}
+{{- else -}}
+{{- "kite" -}}
 {{- end -}}
 {{- end -}}

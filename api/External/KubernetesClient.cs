@@ -35,16 +35,22 @@ public class KubernetesClient {
 		if (!_ingressOptions.Enabled)
 			return new List<Ingress>();
 
-		var ingresses = await _client.ListIngressForAllNamespacesAsync(labelSelector: _ingressOptions?.LabelSelector);
-		return ingresses.Items
-			.Where(i => this._ingressOptions!.AnnotationSelector.Count() > 0 ? this._ingressOptions!.AnnotationSelector.All(a => i.Metadata.Annotations.Any(ia => ia.Key == a.Key && ia.Value == a.Value)) : true)
-			.Where(i => !i.Metadata.Annotations!.Where(a => a.Key == Annotations.ENABLED && a.Value == false.ToString()).Any())
-			.SelectMany(i => i.Spec.Rules.Select(r => new Ingress(
-				i.Metadata.Name,
-				i.Metadata.NamespaceProperty,
-				r.Host,
+		object ingresses = await _client.CustomObjects.ListClusterCustomObjectAsync(
+				group: "networking.k8s.io",
+				version: "v1",
+				plural: "ingresses",
+				labelSelector: _ingressOptions?.LabelSelector
+		);
+		var converted = JsonSerializer.Deserialize(ingresses.ToString() ?? "", AppJsonSerializerContext.Default.IngressList);
+		return converted?.items
+			.Where(i => this._ingressOptions!.AnnotationSelector.Count() > 0 ? this._ingressOptions!.AnnotationSelector.All(a => i.metadata.annotations!.Any(ia => ia.Key == a.Key && ia.Value == a.Value)) : true)
+			.Where(i => !i.metadata.annotations!.Where(a => a.Key == Annotations.ENABLED && a.Value == false.ToString()).Any())
+			.SelectMany(i => i.spec.rules.Select(r => new Ingress(
+				i.metadata.name,
+				i.metadata.namespaceProperty,
+				r.host,
 				"Ingress",
-				i.Metadata.Annotations.Where(a => a.Key.StartsWith(Annotations.BASE))
+				i.metadata.annotations!.Where(a => a.Key.StartsWith(Annotations.BASE))
 			))) ?? new List<Ingress>();
 	}
 
@@ -101,6 +107,20 @@ public class KubernetesClient {
 	}
 
 }
+
+// Ingress
+public record IngressList(IEnumerable<IngressItem> items);
+public record IngressItem(IngressItemMetadata metadata, IngressSpec spec);
+public class IngressItemMetadata {
+	public string? name { get; set; }
+	[JsonPropertyName("namespace")]
+	public string? namespaceProperty { get; set; }
+	public IDictionary<string, string>? annotations { get; set; } = new Dictionary<string, string>();
+}
+public record IngressSpec(IEnumerable<IngressRule> rules);
+public record IngressRule(string? host, IngressRuleHttp? http);
+public record IngressRuleHttp(IEnumerable<IngressPath> paths);
+public record IngressPath(string path, string pathType);
 
 // HttpRoute
 public record HttpRouteList(IEnumerable<HttpRoute> items);

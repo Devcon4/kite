@@ -57,7 +57,8 @@ export class ThemeState {
     const kindLookup = {
       Static: 0,
       Ingress: 2,
-      IngressRoute: 1,
+      HttpRoute: 1,
+      IngressRoute: 3,
     };
     return `var(${
       colorLookup[kindLookup[kind as keyof typeof kindLookup] || 0]

@@ -5,6 +5,7 @@
 
   background-color: var(--kite-surface);
   padding: 24px;
+  padding-bottom: 12px;
 
   border-radius: 5px;
   filter: drop-shadow(0px 2px 2px rgba(0,0,0,.2));
@@ -35,7 +36,11 @@ mat-chip {
 }
 
 .namespace {
-  margin-bottom: -12px;
+  margin-bottom: 4px;
+}
+
+.fill{
+  flex: 1;
 }
 
 .description {
@@ -43,10 +48,15 @@ mat-chip {
   border-left: 3px solid var(--dark, var(--kite8)) var(--light, var(--kite13));
 }
 
-a {
-  transition: all linear 120ms;
+.inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 a:hover {
+  transition: all linear 120ms;
   filter: brightness(80%);
 }

@@ -15,3 +15,37 @@ mat-chip {
 h1,h2,h3,h4,h5 {
   margin: 0 !important;
 }
+
+* {
+  --mat-chip-label-text-color: var(--kite-on-background);
+  --mat-chip-elevated-container-color: var(--kite-background) !important;
+
+}
+
+.field-override {
+  --outlined-outline-width: 2px;
+  --mat-form-field-outlined-container-shape: 8px;
+  --mat-form-field-outlined-outline-width: 2px;
+  --mat-form-field-outlined-hover-color: var(--kite-background);
+  --mat-form-field-outlined-hover-outline-color: var(--kite-on-surface-variant);
+  --mat-form-field-outlined-outline-color: var(--kite-on-surface-variant);
+  --mat-form-field-outlined-focus-outline-color: var(--kite-on-surface-variant);
+  --mat-form-field-container-text-weight: 400;
+  --mat-form-field-outlined-input-text-color: var(--kite-on-surface-variant);
+  --mat-form-field-outlined-input-text-placeholder-color: var(--kite-on-surface-variant);
+  --mat-form-field-trailing-icon-color: var(--kite-on-surface-variant);
+  --mat-form-field-leading-icon-color: var(--kite-on-surface-variant);
+
+}
+
+.field-override.mat-focused {
+  --mat-form-field-outlined-input-text-color: var(--kite-on-surface-variant);
+
+  .mdc-notched-outline {
+    z-index: -1;
+  }
+
+  .mat-mdc-notch-piece {
+    background-color: var(--kite-background) !important;
+  }
+}

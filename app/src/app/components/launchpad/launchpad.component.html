@@ -1,4 +1,4 @@
-<div class="banner card card-color">
+<div class="banner group card-color">
   <h1 class="header">{{ appName | async }}</h1>
   <button mat-icon-button color="secondary" (click)="toggleTheme()">
     @if (isDark | async) {
@@ -8,14 +8,44 @@
     }
   </button>
 </div>
+
+<div class="group card-color">
+  <!-- text filter -->
+  <mat-form-field appearance="outline" class="filter field-override">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="text"
+      [formControl]="textFilter"
+      placeholder="Search"
+    />
+    <button
+      matSuffix
+      mat-icon-button
+      class="clear-button"
+      aria-label="Clear"
+      (click)="clearTextFilter()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
 @if (groupsObs | async; as groups) { @for (group of groups.list | keyvalue:
-groups.sort; track group) {
-<div class="card card-color">
-  <h2 class="header">{{ group.key || "Default" | titlecase }}</h2>
+groups.sort; track group.key) { @let key = group.key || 'default' | titlecase;
+<section class="group card-color" [id]="key">
+  <h2 class="header group-header">
+    <a routerLink="./" [fragment]="key"> {{ key }}</a>
+  </h2>
   <div class="links">
-    @for (l of group.value; track l) {
-    <kite-link-card [style.border-color]="borderColor(l.kind)" [link]="l" />
+    @for (l of group.value; track l.key) {
+    <kite-link-card
+      [style.border-color]="borderColor(l.kind)"
+      [link]="l"
+      animate.enter="card-enter"
+      animate.leave="card-leave"
+    />
     }
   </div>
-</div>
+</section>
 } }

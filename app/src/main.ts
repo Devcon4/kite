@@ -31,7 +31,12 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(RouterModule.forRoot(routes)),
+    importProvidersFrom(
+      RouterModule.forRoot(routes, {
+        anchorScrolling: 'enabled',
+        // scrollPositionRestoration: 'enabled',
+      })
+    ),
     provideHttpClient(),
   ],
 }).catch((err) => console.error(err));

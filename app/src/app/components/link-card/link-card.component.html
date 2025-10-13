@@ -1,27 +1,27 @@
+@let l = link();
 <div class="header">
   <h3>
-    <a class="path" href="{{ link()?.path }}">{{ link()?.name | titlecase }}</a>
+    <a class="path" href="{{ l?.path }}">{{ l?.name | titlecase }}</a>
   </h3>
-  <div class="kind">{{ link()?.kind }}</div>
+  <div class="kind">{{ l?.kind }}</div>
 </div>
-@if (link()?.description) {
-  <p class="description">{{ link()?.description }}</p>
+@if (l?.description) {
+<p class="description">{{ l?.description }}</p>
+} @if (l?.namespaceProperty) {
+<span class="namespace">Namespace: {{ l?.namespaceProperty }}</span>
 }
-@if (link()?.namespaceProperty) {
-  <div class="namespace">
-    Namespace: {{ link()?.namespaceProperty }}
-  </div>
-}
-@if (link()?.tags && (link()?.tags || []).length > 0) {
-  <mat-chip-listbox
-    class="tags"
-    aria-label="Tags"
+<div class="fill"></div>
+<div class="inline">
+  @if (l?.tags && (l?.tags || []).length > 0) {
+  <mat-chip-listbox class="tags" aria-label="Tags" [multiple]="true">
+    @for (tag of tags(); track tag.value) {
+    <mat-chip-option
+      [style.border-color]="selectTagColor(tag.value)"
+      [selected]="tag.selected"
+      (click)="toggleTagFilter(tag.value)"
+      >{{ tag.value | titlecase }}</mat-chip-option
     >
-    @for (tag of link()?.tags; track tag) {
-      <mat-chip-option
-        [style.border-color]="selectTagColor(tag)"
-        >{{ tag | titlecase }}</mat-chip-option
-        >
-      }
-    </mat-chip-listbox>
+    }
+  </mat-chip-listbox>
   }
+</div>

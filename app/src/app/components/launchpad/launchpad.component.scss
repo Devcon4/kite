@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
 
   background-image: paint(fleck);
-  resize: both;
-  overflow: hidden;
 
   --clr1: var(--light, var(--kite13)) var(--dark, var(--kite7));
   --clr2: var(--light, var(--kite14)) var(--dark, var(--kite9));
@@ -23,14 +22,15 @@
   // --fleck-size-base: 6;
   // --fleck-density: 15;
 
-  min-height: 100%;
+  min-height: calc(100vh - 48px);
+  padding-bottom: 48px;
 }
 
 .card-color {
   background-color: var(--kite-surface-secondary);
 }
 
-.card.banner {
+.group.banner {
   flex-direction: row;
   justify-content: center;
 }
@@ -40,22 +40,31 @@
   justify-self: flex-end;
 }
 
-.card h1 {
+.group h1 {
   flex: 1;
   font-size: 42px;
   text-align: center;
 }
 
-.card {
+.group {
   max-width: 1080px;
   width: 100%;
   display: flex;
   flex-direction: column;
   margin-top: 24px;
   border-radius: 5px;
-  
+
   padding: 12px;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,.2));
+}
+
+.group-header {
+  margin-left: -12px !important;
+  margin-right: -12px !important;
+  padding-left: 12px !important;
+  a {
+    color: var(--kite-on-surface-secondary);
+  }
 }
 
 .header {
@@ -64,6 +73,8 @@
   padding: 24px 0;
   position: sticky;
   top: 0px;
+  z-index: 1000;
+  background-color: var(--kite-surface-secondary);
 }
 
 .spinner {
@@ -82,6 +93,25 @@
 
 kite-link-card {
   flex-basis: 40%;
+  // transition only opacity and transform for smoother animations
+  transition: opacity 250ms ease-in-out, transform 250ms ease-in-out;
+  animation-fill-mode: forwards;
+
+/* Starting state for transitions */
+  @starting-style {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
+/* Enter animation class */
+.card-enter {
+  animation: slide-fade 250ms ease-in forwards;
+}
+
+/* Leave animation class */
+.card-leave {
+  animation: slide-fade 250ms ease-out reverse;
 }
 
 @media screen and (max-width: 1080px) {
@@ -92,4 +122,19 @@ kite-link-card {
   .card h1 {
     text-align: start;
   }
+}
+
+@keyframes slide-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.clear-button {
+  margin-right: 8px;
 }

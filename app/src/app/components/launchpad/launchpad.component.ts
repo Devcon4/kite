@@ -1,20 +1,47 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // import 'css-paint-polyfill'; // Breaks vitest and doesn't actually polyfill in firefox.
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { debounceTime, map, startWith, tap } from 'rxjs/operators';
 import {
   groupBy,
   keyValueSort,
   lookupSort,
 } from '../../../services/arrayUtils';
-import { LinkState } from '../../../services/link.state';
+import { Link, LinkState } from '../../../services/link.state';
 import { SettingState } from '../../../services/setting.state';
 import { ThemeState, ThemeType } from '../../../services/theme.state';
 import { LinkCardComponent } from '../link-card/link-card.component';
+
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import Fuse from 'fuse.js';
+const filterLinks = (links: Link[], filter: string) => {
+  if (!filter || filter.length < 2) return links;
+  const fuse = new Fuse(links, {
+    keys: [
+      { name: 'name', weight: 3.0 },
+      { name: 'tags', weight: 2.0 },
+      { name: 'path', weight: 1.5 },
+      { name: 'description', weight: 1.0 },
+      { name: 'group', weight: 0.5 },
+      { name: 'kind', weight: 0.5 },
+    ],
+    threshold: 0.3,
+    includeScore: true,
+    isCaseSensitive: false,
+    useExtendedSearch: true,
+    shouldSort: true,
+    minMatchCharLength: 2,
+  });
+
+  return fuse.search(filter).map((r) => r.item);
+};
 
 @Component({
   selector: 'kite-launchpad',
@@ -26,12 +53,20 @@ import { LinkCardComponent } from '../link-card/link-card.component';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    RouterLink,
   ],
 })
 export class LaunchpadComponent implements OnInit {
   private linkState = inject(LinkState);
   private themeState = inject(ThemeState);
   private settingState = inject(SettingState);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  textFilter = new FormControl('', { nonNullable: true });
 
   keySort = this.settingState.globalSettings.pipe(
     map((s) =>
@@ -39,7 +74,21 @@ export class LaunchpadComponent implements OnInit {
     )
   );
 
-  groupsObs = combineLatest([this.linkState.links, this.keySort]).pipe(
+  groupsObs = combineLatest([
+    this.linkState.linksFiltered,
+    this.keySort,
+    this.textFilter.valueChanges.pipe(
+      debounceTime(120),
+      startWith(this.activatedRoute.snapshot.queryParamMap.get('q') || '')
+    ),
+  ]).pipe(
+    tap(([_, __, t]) =>
+      this.router.navigate([], {
+        queryParams: t ? { q: t } : {},
+        preserveFragment: !t,
+      })
+    ),
+    map(([l, s, t]) => [filterLinks(l, t), s] as const),
     map(([l, s]) => ({ list: groupBy(l, (o) => o.group), sort: s }))
   );
 
@@ -55,8 +104,26 @@ export class LaunchpadComponent implements OnInit {
 
   appName = this.settingState.globalSettings.pipe(map((s) => s?.appName));
 
+  clearTextFilter() {
+    this.textFilter.setValue('');
+  }
+
   ngOnInit(): void {
     this.linkState.getLinks();
     this.settingState.getSettings();
+
+    this.textFilter.setValue(
+      this.activatedRoute.snapshot.queryParamMap.get('q') || ''
+    );
+
+    // Handle scrolling to fragment on page load/refresh
+    // this.activatedRoute.fragment.subscribe((fragment) => {
+    //   if (fragment) {
+    //     // Use setTimeout to ensure DOM is ready after async data loads
+    //     setTimeout(() => {
+    //       this.viewportScroller.scrollToAnchor(fragment);
+    //     }, 100);
+    //   }
+    // });
   }
 }

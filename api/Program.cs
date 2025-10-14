@@ -34,6 +34,9 @@ builder.Services.AddJackdaw(opts => {
 	opts.UseInMemoryQueue();
 });
 
+// Add health checks
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -58,6 +61,15 @@ apiGroup.MapGet("/setting", async (IMediator mediator) => {
 })
 .WithName("getSettings")
 .Produces<GetSettingsResponse>();
+
+// Health check endpoints
+app.MapHealthChecks("/healthz/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions {
+	Predicate = _ => false // Liveness - just checks if the app is running
+})
+.WithName("liveness");
+
+app.MapHealthChecks("/healthz/ready")
+.WithName("readiness");
 
 app.MapFallbackToFile("index.html");
 

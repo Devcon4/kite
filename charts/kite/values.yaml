@@ -70,4 +70,5 @@ tolerations: []
 
 affinity: {}
 
+# configMapName: extra appsettings.json
 kiteConfig: {}

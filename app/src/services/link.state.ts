@@ -9,6 +9,7 @@ export type Link = {
   name: string;
   key: string;
   namespaceProperty: string;
+  link: string;
   kind: string;
   tags: string[];
   description: string;
@@ -31,7 +32,7 @@ export class LinkState {
     this.filterState.selectedTags,
   ]).pipe(
     tap(([links, selectedTags]) =>
-      console.log('Filtering links', { links, selectedTags })
+      console.log('Filtering links', { links, selectedTags }),
     ),
     map(([links, selectedTags]) => {
       if (selectedTags.length === 0) {
@@ -39,9 +40,11 @@ export class LinkState {
       }
       // Filter links that have at least one of the selected tags
       return links.filter((link) =>
-        link.tags.some((tag) => selectedTags.includes(tag.trim().toLowerCase()))
+        link.tags.some((tag) =>
+          selectedTags.includes(tag.trim().toLowerCase()),
+        ),
       );
-    })
+    }),
   );
 
   public getLinks() {
@@ -52,9 +55,9 @@ export class LinkState {
           r.list.map((l) => ({
             ...l,
             key: l.name.toLowerCase() + l.path.toLowerCase(),
-          }))
+          })),
         ),
-        tap((r) => this.links.next(r))
+        tap((r) => this.links.next(r)),
       )
       .subscribe();
   }

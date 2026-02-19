@@ -18,7 +18,8 @@ public static partial class Mapper {
 		i.Kind,
 		GetAnnotation(Annotations.TAGS, i.Annotations).ToLower().Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries),
 		GetAnnotation(Annotations.GROUP, i.Annotations),
-		GetAnnotation(Annotations.DESCRIPTION, i.Annotations));
+		GetAnnotation(Annotations.DESCRIPTION, i.Annotations),
+		GetAnnotation(Annotations.LINK, i.Annotations));
 	public static Func<StaticRoute, Link> StaticRouteToLink => r => new Link(
 		GetAnnotation(Annotations.PATH, r.Annotations, r.Path),
 		GetAnnotation(Annotations.NAME, r.Annotations, r.Name),
@@ -26,5 +27,6 @@ public static partial class Mapper {
 		r.Kind,
 		GetAnnotation(Annotations.TAGS, r.Annotations).ToLower().Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries),
 		GetAnnotation(Annotations.GROUP, r.Annotations),
-		GetAnnotation(Annotations.DESCRIPTION, r.Annotations));
+		GetAnnotation(Annotations.DESCRIPTION, r.Annotations),
+		GetAnnotation(Annotations.LINK, r.Annotations));
 }

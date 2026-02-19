@@ -6,5 +6,6 @@ public record Link(
 	string? namespaceProperty,
 	string kind,
 	IEnumerable<string>? tags, string? group,
-	string? description
+	string? description,
+	string? link
 );
